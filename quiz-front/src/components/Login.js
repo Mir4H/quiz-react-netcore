@@ -4,16 +4,19 @@ import { Button, TextField, Typography, Box } from "@mui/material";
 import * as Yup from "yup";
 import { createAPIendpoint, ENDPOINTS } from "../api";
 import useStateContext from "../hooks/useStateContext";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
   const { context, setContext } = useStateContext()
+  const navigate = useNavigate()
 
   const submitForm = (values) => {
     createAPIendpoint(ENDPOINTS.player)
       .post(values)
       .then((res) => {
         setContext({ playerId: res.data.playerId })
+        navigate('/quiz')
       })
       .catch((err) => console.log(err));
     console.log(JSON.stringify(values, null, 2));
