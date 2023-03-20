@@ -2,18 +2,23 @@ import React from "react";
 import { Formik, Form } from "formik";
 import { Button, TextField, Typography, Box } from "@mui/material";
 import * as Yup from "yup";
+import { createAPIendpoint, ENDPOINTS } from "../api";
 
 const Login = () => {
   const submitForm = (values) => {
+    createAPIendpoint(ENDPOINTS.player)
+    .post(values)
+    .then(res=> console.log(res))
+    .catch(err => console.log(err))
     console.log(JSON.stringify(values, null, 2));
   };
   const validationFields = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
-    username: Yup.string().required("Required"),
+    name: Yup.string().required("Required"),
   })
   const initialValues = {
     email: "",
-    username: "",
+    name: "",
   }
 
   return (
@@ -57,14 +62,14 @@ const Login = () => {
                 <TextField
                   fullWidth
                   margin="dense"
-                  id="username"
-                  name="username"
-                  label="Username"
+                  id="name"
+                  name="name"
+                  label="Name"
                   variant="standard"
-                  value={values.username}
+                  value={values.name}
                   onChange={handleChange}
-                  error={touched.username && Boolean(errors.username)}
-                  helperText={touched.username && errors.username}
+                  error={touched.name && Boolean(errors.name)}
+                  helperText={touched.name && errors.name}
                 />
                 <Button
                   color="primary"
