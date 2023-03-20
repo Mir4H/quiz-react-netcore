@@ -3,13 +3,14 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CardMedia,
   LinearProgress,
   List,
   ListItemButton,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { createAPIendpoint, ENDPOINTS } from "../api";
+import { BASE_URL, createAPIendpoint, ENDPOINTS } from "../api";
 import { formatTime } from "../helpers/formatTime";
 import useStateContext from "../hooks/useStateContext";
 
@@ -27,6 +28,7 @@ const Quiz = () => {
   };
 
   useEffect(() => {
+    setContext({finishTime:0, selectedOptions:[]})
     createAPIendpoint(ENDPOINTS.question)
       .fetch()
       .then((res) => {
@@ -76,6 +78,9 @@ const Quiz = () => {
           value={((questionIndex + 1) * 100) / 5}
         />
       </Box>
+      {questions[questionIndex].imageName==null ? 
+      null
+      : <CardMedia component="img" image={`${BASE_URL}images/${questions[questionIndex].imageName}`} sx={{maxWidth: 640}}/>}
       <CardContent>
         <Typography variant="h6">
           {questions[questionIndex].questionText}

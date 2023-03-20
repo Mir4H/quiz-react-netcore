@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import { Button, TextField, Typography, Box } from "@mui/material";
 import * as Yup from "yup";
@@ -8,8 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
-  const { context, setContext } = useStateContext()
+  const { context, setContext, resetContext } = useStateContext()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    resetContext()
+  }, [])
 
   const submitForm = (values) => {
     createAPIendpoint(ENDPOINTS.player)
