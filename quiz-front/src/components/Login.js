@@ -3,23 +3,29 @@ import { Formik, Form } from "formik";
 import { Button, TextField, Typography, Box } from "@mui/material";
 import * as Yup from "yup";
 import { createAPIendpoint, ENDPOINTS } from "../api";
+import useStateContext from "../hooks/useStateContext";
+
 
 const Login = () => {
+  const { context, setContext } = useStateContext()
+
   const submitForm = (values) => {
     createAPIendpoint(ENDPOINTS.player)
-    .post(values)
-    .then(res=> console.log(res))
-    .catch(err => console.log(err))
+      .post(values)
+      .then((res) => {
+        setContext({ playerId: res.data.playerId })
+      })
+      .catch((err) => console.log(err));
     console.log(JSON.stringify(values, null, 2));
   };
   const validationFields = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
     name: Yup.string().required("Required"),
-  })
+  });
   const initialValues = {
     email: "",
     name: "",
-  }
+  };
 
   return (
     <Formik
@@ -53,7 +59,6 @@ const Login = () => {
                   id="email"
                   name="email"
                   label="Email"
-                  variant="standard"
                   value={values.email}
                   onChange={handleChange}
                   error={touched.email && Boolean(errors.email)}
@@ -65,7 +70,6 @@ const Login = () => {
                   id="name"
                   name="name"
                   label="Name"
-                  variant="standard"
                   value={values.name}
                   onChange={handleChange}
                   error={touched.name && Boolean(errors.name)}

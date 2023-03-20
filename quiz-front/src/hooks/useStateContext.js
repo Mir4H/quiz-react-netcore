@@ -7,28 +7,25 @@ const getFreshContext = () => {
     playerId: 0,
     finishTime: 0,
     selectedOptions: [],
-  };
-};
+  }
+}
 
-export const useStateContext = () => {
+export default function useStateContext() {
   const { context, setContext } = useContext(stateContext);
   return {
     context,
-    setContext: (obj) => {
-      setContext({ ...context, ...obj });
+    setContext: obj => {
+      setContext({ ...context, ...obj })
     },
-  };
-};
+  }
+}
 
-const ContextProvider = ({ children }) => {
-  const [context, setContext] = useState(getFreshContext);
+export function ContextProvider({ children }) {
+  const [context, setContext] = useState(getFreshContext());
 
   return (
-    // eslint-disable-next-line no-sequences
-    <stateContext.Provider value={(context, setContext)}>
+    <stateContext.Provider value={{context, setContext}}>
       {children}
     </stateContext.Provider>
-  );
-};
-
-export default ContextProvider;
+  )
+}
