@@ -16,36 +16,65 @@ import useStateContext from "../hooks/useStateContext";
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [finishTime, setFinishTime] = useState(0)
-  
-  let timer
+  const [finishTime, setFinishTime] = useState(0);
+  const { context, setContext } = useStateContext();
+  let timer;
 
   const startTimer = () => {
-    timer = setTimeout(() => {
-      setFinishTime(finishTime + 1)
-    }, 1000)
-  }
+    timer = setInterval(() => {
+      setFinishTime(prev => prev + 1);
+    }, [1000]);
+  };
 
   useEffect(() => {
     createAPIendpoint(ENDPOINTS.question)
       .fetch()
       .then((res) => {
-        setQuestions(res.data)
-        startTimer()
+        setQuestions(res.data);
+        startTimer();
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       });
 
-      return () => { clearInterval(timer)}
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
+  const updateAnswer = (questionId, option) => {
+    const answer = [...context.selectedOptions];
+    answer.push({
+      questionId,
+      selected: option,
+    });
+
+    if (questionIndex < 4) {
+      setContext({ selectedOptions: [...answer] });
+      setQuestionIndex(questionIndex + 1);
+    } else {
+      setContext({ selectedOptions: [...answer], finishTime });
+    }
+  };
 
   return questions.length !== 0 ? (
-    <Card sx={{maxWidth:640, mx:'auto', mt:5, '& .MuiCardHeader-action':{m:0, alignSelf: 'center'}}}>
-      <CardHeader title={`Question ${questionIndex+1} of 5`} action={<Typography>{formatTime(finishTime)}</Typography>}/>
+    <Card
+      sx={{
+        maxWidth: 640,
+        mx: "auto",
+        mt: 5,
+        "& .MuiCardHeader-action": { m: 0, alignSelf: "center" },
+      }}
+    >
+      <CardHeader
+        title={`Question ${questionIndex + 1} of 5`}
+        action={<Typography>{formatTime(finishTime)}</Typography>}
+      />
       <Box>
-        <LinearProgress variant="determinate" value={(questionIndex+1)*100/5}/>
+        <LinearProgress
+          variant="determinate"
+          value={((questionIndex + 1) * 100) / 5}
+        />
       </Box>
       <CardContent>
         <Typography variant="h6">
@@ -53,7 +82,12 @@ const Quiz = () => {
         </Typography>
         <List>
           {questions[questionIndex].options.map((item, index) => (
-            <ListItemButton key={index}>
+            <ListItemButton
+              key={index}
+              onClick={() =>
+                updateAnswer(questions[questionIndex].questionId, index)
+              }
+            >
               <div>
                 {String.fromCharCode(65 + index) + " | "} {item}
               </div>
