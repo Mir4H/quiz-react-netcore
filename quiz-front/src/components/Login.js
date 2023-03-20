@@ -9,11 +9,11 @@ const Login = () => {
   };
   const validationFields = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required("Required"),
+    username: Yup.string().required("Required"),
   })
   const initialValues = {
     email: "",
-    password: "",
+    username: "",
   }
 
   return (
@@ -51,20 +51,20 @@ const Login = () => {
                   variant="standard"
                   value={values.email}
                   onChange={handleChange}
-                  error={touched.email && Boolean(errors.password)}
+                  error={touched.email && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
                 />
                 <TextField
                   fullWidth
                   margin="dense"
-                  id="password"
-                  name="password"
-                  label="Password"
+                  id="username"
+                  name="username"
+                  label="Username"
                   variant="standard"
-                  value={values.password}
+                  value={values.username}
                   onChange={handleChange}
-                  error={touched.password && Boolean(errors.password)}
-                  helperText={touched.password && errors.password}
+                  error={touched.username && Boolean(errors.username)}
+                  helperText={touched.username && errors.username}
                 />
                 <Button
                   color="primary"
