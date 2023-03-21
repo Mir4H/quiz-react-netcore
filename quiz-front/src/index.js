@@ -1,20 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
-import { ContextProvider } from "./hooks/useStateContext";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { CssBaseline } from '@mui/material'
+import { ContextProvider } from './hooks/useStateContext'
 
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: 'dark'
   },
   typography: {
     fontFamily: "'IBM Plex Sans'"
   }
-});
+})
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ContextProvider>
       <ThemeProvider theme={darkTheme}>
@@ -23,4 +23,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </ThemeProvider>
     </ContextProvider>
   </React.StrictMode>
-);
+)

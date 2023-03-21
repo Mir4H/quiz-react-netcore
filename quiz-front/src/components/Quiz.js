@@ -7,68 +7,68 @@ import {
   LinearProgress,
   List,
   ListItemButton,
-  Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAPIendpoint, ENDPOINTS } from "../api";
-import { formatTime } from "../helpers/formatTime";
-import useStateContext from "../hooks/useStateContext";
+  Typography
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { BASE_URL, createAPIendpoint, ENDPOINTS } from '../api'
+import { formatTime } from '../helpers/formatTime'
+import useStateContext from '../hooks/useStateContext'
 
 const Quiz = () => {
-  const [questions, setQuestions] = useState([]);
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [finishTime, setFinishTime] = useState(0);
-  const { context, setContext } = useStateContext();
+  const [questions, setQuestions] = useState([])
+  const [questionIndex, setQuestionIndex] = useState(0)
+  const [finishTime, setFinishTime] = useState(0)
+  const { context, setContext } = useStateContext()
   const navigate = useNavigate()
-  let timer;
+  let timer
 
   const startTimer = () => {
     timer = setInterval(() => {
-      setFinishTime(prev => prev + 1);
-    }, [1000]);
-  };
+      setFinishTime((prev) => prev + 1)
+    }, [1000])
+  }
 
   useEffect(() => {
-    setContext({finishTime:0, selectedOptions:[]})
+    setContext({ finishTime: 0, selectedOptions: [] })
     createAPIendpoint(ENDPOINTS.question)
       .fetch()
       .then((res) => {
-        setQuestions(res.data);
-        startTimer();
+        setQuestions(res.data)
+        startTimer()
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
 
     return () => {
-      clearInterval(timer);
-    };
-  }, []);
+      clearInterval(timer)
+    }
+  }, [])
 
   const updateAnswer = (questionId, option) => {
-    const answer = [...context.selectedOptions];
+    const answer = [...context.selectedOptions]
     answer.push({
       questionId,
-      selected: option,
-    });
+      selected: option
+    })
 
     if (questionIndex < 4) {
-      setContext({ selectedOptions: [...answer] });
-      setQuestionIndex(questionIndex + 1);
+      setContext({ selectedOptions: [...answer] })
+      setQuestionIndex(questionIndex + 1)
     } else {
-      setContext({ selectedOptions: [...answer], finishTime });
+      setContext({ selectedOptions: [...answer], finishTime })
       navigate('/result')
     }
-  };
+  }
 
   return questions.length !== 0 ? (
     <Card
       sx={{
         maxWidth: 640,
-        mx: "auto",
+        mx: 'auto',
         mt: 5,
-        "& .MuiCardHeader-action": { m: 0, alignSelf: "center" },
+        '& .MuiCardHeader-action': { m: 0, alignSelf: 'center' }
       }}
     >
       <CardHeader
@@ -76,35 +76,32 @@ const Quiz = () => {
         action={<Typography>{formatTime(finishTime)}</Typography>}
       />
       <Box>
-        <LinearProgress
-          variant="determinate"
-          value={((questionIndex + 1) * 100) / 5}
-        />
+        <LinearProgress variant="determinate" value={((questionIndex + 1) * 100) / 5} />
       </Box>
-      {questions[questionIndex].imageName==null ? 
-      null
-      : <CardMedia component="img" image={`${BASE_URL}images/${questions[questionIndex].imageName}`} sx={{maxWidth: 640}}/>}
+      {questions[questionIndex].imageName == null ? null : (
+        <CardMedia
+          component="img"
+          image={`${BASE_URL}images/${questions[questionIndex].imageName}`}
+          sx={{ maxWidth: 640 }}
+        />
+      )}
       <CardContent>
-        <Typography variant="h6">
-          {questions[questionIndex].questionText}
-        </Typography>
+        <Typography variant="h6">{questions[questionIndex].questionText}</Typography>
         <List>
           {questions[questionIndex].options.map((item, index) => (
             <ListItemButton
               key={index}
-              onClick={() =>
-                updateAnswer(questions[questionIndex].questionId, index)
-              }
+              onClick={() => updateAnswer(questions[questionIndex].questionId, index)}
             >
               <div>
-                {String.fromCharCode(65 + index) + " | "} {item}
+                {String.fromCharCode(65 + index) + ' | '} {item}
               </div>
             </ListItemButton>
           ))}
         </List>
       </CardContent>
     </Card>
-  ) : null;
-};
+  ) : null
+}
 
-export default Quiz;
+export default Quiz

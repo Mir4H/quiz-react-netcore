@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import { Formik, Form } from "formik";
-import { Button, TextField, Typography, Box } from "@mui/material";
-import * as Yup from "yup";
-import { createAPIendpoint, ENDPOINTS } from "../api";
-import useStateContext from "../hooks/useStateContext";
-import { useNavigate } from "react-router-dom";
-
+import React, { useEffect } from 'react'
+import { Formik, Form } from 'formik'
+import { Button, TextField, Typography, Box } from '@mui/material'
+import * as Yup from 'yup'
+import { createAPIendpoint, ENDPOINTS } from '../api'
+import useStateContext from '../hooks/useStateContext'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const { context, setContext, resetContext } = useStateContext()
@@ -22,37 +21,28 @@ const Login = () => {
         setContext({ playerId: res.data.playerId })
         navigate('/quiz')
       })
-      .catch((err) => console.log(err));
-    console.log(JSON.stringify(values, null, 2));
-  };
+      .catch((err) => console.log(err))
+    console.log(JSON.stringify(values, null, 2))
+  }
   const validationFields = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
-    name: Yup.string().required("Required"),
-  });
+    email: Yup.string().email('Invalid email').required('Required'),
+    name: Yup.string().required('Required')
+  })
   const initialValues = {
-    email: "",
-    name: "",
-  };
+    email: '',
+    name: ''
+  }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationFields}
-      onSubmit={submitForm}
-    >
+    <Formik initialValues={initialValues} validationSchema={validationFields} onSubmit={submitForm}>
       {({ values, touched, handleChange, errors, setFieldValue }) => {
         return (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="80vh"
-          >
+          <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
             <Box
               sx={{
                 borderRadius: 6,
-                backgroundColor: "#262626",
-                p: 5,
+                backgroundColor: '#262626',
+                p: 5
               }}
             >
               <Typography variant="h3" sx={{ pb: 2 }}>
@@ -88,7 +78,7 @@ const Login = () => {
                   type="submit"
                   size="large"
                   sx={{
-                    mt: 2,
+                    mt: 2
                   }}
                 >
                   Submit
@@ -96,10 +86,10 @@ const Login = () => {
               </Form>
             </Box>
           </Box>
-        );
+        )
       }}
     </Formik>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

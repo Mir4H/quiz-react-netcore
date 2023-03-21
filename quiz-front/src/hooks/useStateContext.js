@@ -1,48 +1,42 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-export const stateContext = createContext();
+export const stateContext = createContext()
 
 const getFreshContext = () => {
-  if (localStorage.getItem("context") === null) {
+  if (localStorage.getItem('context') === null) {
     localStorage.setItem(
-      "context",
+      'context',
       JSON.stringify({
         playerId: 0,
         finishTime: 0,
-        selectedOptions: [],
+        selectedOptions: []
       })
     )
   }
 
-  return JSON.parse(localStorage.getItem("context"));
-};
+  return JSON.parse(localStorage.getItem('context'))
+}
 
 export default function useStateContext() {
-  const { context, setContext } = useContext(stateContext);
+  const { context, setContext } = useContext(stateContext)
   return {
     context,
     setContext: (obj) => {
       setContext({ ...context, ...obj })
     },
     resetContext: () => {
-        localStorage.removeItem("context")
-        setContext(getFreshContext())
+      localStorage.removeItem('context')
+      setContext(getFreshContext())
     }
   }
 }
 
 export function ContextProvider({ children }) {
-  const [context, setContext] = useState(getFreshContext());
+  const [context, setContext] = useState(getFreshContext())
 
   useEffect(() => {
-    localStorage.setItem(
-        "context",
-        JSON.stringify(context))
+    localStorage.setItem('context', JSON.stringify(context))
   }, [context])
 
-  return (
-    <stateContext.Provider value={{ context, setContext }}>
-      {children}
-    </stateContext.Provider>
-  );
+  return <stateContext.Provider value={{ context, setContext }}>{children}</stateContext.Provider>
 }
