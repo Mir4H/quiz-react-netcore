@@ -10,7 +10,7 @@ const darkTheme = createTheme({
     mode: "dark",
   },
   typography: {
-    fontFamily: "'IBM Plex Mono'"
+    fontFamily: "'IBM Plex Sans'"
   }
 });
 

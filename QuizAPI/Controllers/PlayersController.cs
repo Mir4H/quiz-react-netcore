@@ -52,12 +52,16 @@ namespace QuizAPI.Controllers
         // PUT: api/Players/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(int id, Player player)
+        public async Task<IActionResult> PutPlayer(int id, PlayerResult _playerResult)
         {
-            if (id != player.PlayerId)
+            if (id != _playerResult.PlayerId)
             {
                 return BadRequest();
             }
+            //get current details and update with quiz results
+            Player player = _context.Players.Find(id);
+            player.Score = _playerResult.Score;
+            player.FinishTime = _playerResult.FinishTime;
 
             _context.Entry(player).State = EntityState.Modified;
 
@@ -76,7 +80,6 @@ namespace QuizAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 

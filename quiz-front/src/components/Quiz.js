@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL, createAPIendpoint, ENDPOINTS } from "../api";
 import { formatTime } from "../helpers/formatTime";
 import useStateContext from "../hooks/useStateContext";
@@ -19,6 +20,7 @@ const Quiz = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [finishTime, setFinishTime] = useState(0);
   const { context, setContext } = useStateContext();
+  const navigate = useNavigate()
   let timer;
 
   const startTimer = () => {
@@ -56,6 +58,7 @@ const Quiz = () => {
       setQuestionIndex(questionIndex + 1);
     } else {
       setContext({ selectedOptions: [...answer], finishTime });
+      navigate('/result')
     }
   };
 

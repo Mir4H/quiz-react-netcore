@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using QuizAPI.Models;
 
@@ -83,19 +84,22 @@ namespace QuizAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Questions
+        // POST: api/Questions/GetAnswers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Question>> PostQuestion(Question question)
+        [Route("GetAnswers")]
+        public async Task<ActionResult<Question>> GetAnswers(int[] questionIds)
         {
-          if (_context.Questions == null)
-          {
-              return Problem("Entity set 'QuizDBContext.Questions'  is null.");
-          }
-            _context.Questions.Add(question);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetQuestion", new { id = question.QuestionId }, question);
+            var answers = await(_context.Questions.Where(x => questionIds.Contains(x.QuestionId))
+                .Select(y => new
+            {
+                QuestionId = y.QuestionId,
+                QuestionText = y.QuestionText,
+                ImageName = y.ImageName,
+                Options = new string[] { y.Option1, y.Option2, y.Option3, y.Option4 },
+                Answer = y.Answer
+            })).ToListAsync();
+            return Ok(answers);
         }
 
         // DELETE: api/Questions/5
