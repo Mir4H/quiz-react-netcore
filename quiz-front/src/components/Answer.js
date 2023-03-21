@@ -20,12 +20,6 @@ const Answer = ({ questionAnswers }) => {
         setExpanded(isExpanded ? panel : false)
     }
 
-    const markCorrectOrNot = (qa, index) => {
-        if ([qa.answer, qa.selected].includes(index)) {
-            return {sx: {color: qa.answer == index ? green[500] : red[500]}}
-        }
-    }
-
   return (
     <Box sx={{ mt: 5, width: "100%", maxWidth: 640, mx: "auto" }}>
       {questionAnswers.map((item, j) => (
@@ -46,7 +40,7 @@ const Answer = ({ questionAnswers }) => {
             <List>
               {item.options.map((item, index) => (
                 <ListItem key={index}>
-                  <Typography {...markCorrectOrNot(item, index)}>
+                  <Typography>
                     {String.fromCharCode(65 + index) + " | "} {item}
                   </Typography>
                 </ListItem>
