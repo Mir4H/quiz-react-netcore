@@ -22,17 +22,18 @@ const Result = () => {
       .then((res) => {
         const qa = context.selectedOptions.map((x) => ({
           ...x,
-          ...res.data.find((y) => y.questionId == x.questionId)
+          ...res.data.find((y) => y.questionId === x.questionId)
         }))
         setAnswers(qa)
         calculateScore(qa)
       })
       .catch((err) => console.log(err))
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const calculateScore = (qa) => {
     let tempScore = qa.reduce((acc, curr) => {
-      return curr.answer == curr.selected ? acc + 1 : acc
+      return curr.answer === curr.selected ? acc + 1 : acc
     }, 0)
     setScore(tempScore)
   }

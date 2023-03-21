@@ -7,11 +7,12 @@ import useStateContext from '../hooks/useStateContext'
 import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-  const { context, setContext, resetContext } = useStateContext()
+  const { setContext, resetContext } = useStateContext()
   const navigate = useNavigate()
 
   useEffect(() => {
     resetContext()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const submitForm = (values) => {
