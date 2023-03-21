@@ -46,7 +46,7 @@ const Answer = ({ questionAnswers }) => {
             <List>
               {item.options.map((item, index) => (
                 <ListItem key={index}>
-                  <Typography {...markCorrectOrNot(item, i)}>
+                  <Typography {...markCorrectOrNot(item, index)}>
                     {String.fromCharCode(65 + index) + " | "} {item}
                   </Typography>
                 </ListItem>
